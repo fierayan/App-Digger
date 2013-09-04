@@ -33,8 +33,8 @@ function gatherInformation(){
                     "screenShotSrc": [
                         {"shot_1":screenShotSrc[0]},
                         {"shot_2":screenShotSrc[1]},
-                        {shot_3:screenShotSrc[2]},
-                        {shot_4:screenShotSrc[3]}
+                        {"shot_3":screenShotSrc[2]},
+                        {"shot_4":screenShotSrc[3]}
                     ],
                     "appDes":appDes,
                     "promoteReason":promoteReason,
@@ -89,6 +89,15 @@ document.addEventListener('DOMContentLoaded', function (){
         });
     if(localStorage.getItem("userName")){
         document.querySelector(".textarea_small").value=localStorage.getItem("userName");
+    }
+    var textareaAll=document.querySelectorAll(".textarea");
+    for(var i=0;i<textareaAll.length;i++){
+        textareaAll[i].addEventListener("focus",function(event){
+            event.target.parentNode.querySelector(".warn").setAttribute("class","warn");
+        },false);
+        textareaAll[i].addEventListener("blur",function(event){
+            event.target.parentNode.querySelector(".warn").setAttribute("class","warn warn_hide");
+        },false);
     }
     var subBtn=document.querySelector(".button");
     subBtn.addEventListener("click",gatherInformation,false);
