@@ -11,7 +11,6 @@
             font-family: "Microsoft Yahei";
             color:#34495E;
             background: #EDEFF1;
-            width: 600px;
         }
         .h5{
             text-align: center;
@@ -20,12 +19,11 @@
         }
         .form{
             width: 600px;
-            height: 300px;
             margin: 0 auto;
         }
         .wrap{
             margin: 20px auto;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
             position: relative;
         }
         .textarea{
@@ -33,7 +31,7 @@
             border: 1px solid #95a5a6;
             width: 30em;
             box-sizing: border-box;
-            padding: 5px 5px;
+            padding: 5px 10px;
             font-size: 18px;
             border-radius: 5px;
             transition: box-shadow .3s ease-in-out;
@@ -71,7 +69,7 @@
             border:none;
             color:white;
             background: #1ABC9C;
-            border-radius:0 0 5px 5px;
+            border-radius:0 0 10px 10px;
             font-size: 24px;
             height: 50px;
             line-height: 50px;
@@ -86,22 +84,22 @@
     </style>
 </head>
 <body>
-    <h5 class="h5">App Digger</h5>
     <form class="form">
+        <h5 class="h5">App Digger</h5>
         <div class="wrap">
-            <textarea name="reason" id="user"  class="textarea textarea_small" placeholder="请输入你的ID"></textarea>
-            <span class="warn warn_hide" id="userWarn">正确输入ID才能提交哦！</span>
+            <textarea name="reason" id="user"  class="textarea textarea_small" placeholder="Please Enter Your Tencent Id"></textarea>
+            <span class="warn warn_hide" id="userWarn">tencent id please~</span>
         </div>
         <div class="wrap">
-            <textarea name="reason" id="reason"  class="textarea textarea_medium" placeholder="请输入你的推荐理由"></textarea>
-            <span class="warn warn_hide" id="reasonWarn">推荐理由要超过10个字符哟！</span>
+            <textarea name="reason" id="reason"  class="textarea textarea_medium" placeholder="Please Enter the Reason You Recommend the App"></textarea>
+            <span class="warn warn_hide" id="reasonWarn">10 words at least please~</span>
         </div>
         <div class="wrap">
-            <textarea name="des" id="des"  class="textarea textarea_large" placeholder="请输入APP的主要功能"></textarea>
-            <span class="warn warn_hide" id="desWarn">描述太少了，怎么也得20个字符吧！</span>
+            <textarea name="des" id="des"  class="textarea textarea_large" placeholder="Please Enter the Description of the App"></textarea>
+            <span class="warn warn_hide" id="desWarn">20 words at least please~</span>
         </div>
-        <a class="button" href="#">提交</a>
     </form>
+    <a class="button" href="#">Share</a>
     <script type="text/javascript" src="popup.js"></script>
 </body>
 </html>
