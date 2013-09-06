@@ -13,13 +13,31 @@
             background: #EDEFF1;
         }
         .h5{
-            text-align: center;
-            font-size: 24px;
+            font-size: 32px;
             margin: 0 0 30px 0;
+            padding-left: 30px;
+            font-family: tahoma;
         }
         .form{
             width: 600px;
             margin: 0 auto;
+            position: relative;
+        }
+        .userInfo{
+            position: absolute;
+            top: 5px;
+            right: 35px;
+        }
+        .userInfo img{
+            width:40px;
+            height: 40px;
+            border-radius: 40px;
+            border:2px solid white;
+        }
+        .userInfo span{
+            font-size: 16px;
+            display: inline-block;
+            vertical-align: 5px;
         }
         .wrap{
             margin: 20px auto;
@@ -61,7 +79,7 @@
             bottom: -10px;
             left: 40px;
         }
-        .warn_hide{
+        .hide{
             display: none;
         }
         .button{
@@ -85,18 +103,22 @@
 </head>
 <body>
     <form class="form">
-        <h5 class="h5">App Digger</h5>
+        <h5 class="h5">APP DIGGER</h5>
+        <div class="userInfo hide">
+                <img src=""/>
+                <span></span>
+        </div>
         <div class="wrap">
-            <textarea name="reason" id="user"  class="textarea textarea_small" placeholder="Please Enter Your Tencent Id"></textarea>
-            <span class="warn warn_hide" id="userWarn">tencent id please~</span>
+            <textarea name="id" id="name"  class="textarea textarea_small" placeholder="Please Enter Your Tencent Id"></textarea>
+            <span class="warn hide" id="nameWarn">your tencent id please~</span>
         </div>
         <div class="wrap">
             <textarea name="reason" id="reason"  class="textarea textarea_medium" placeholder="Please Enter the Reason You Recommend the App"></textarea>
-            <span class="warn warn_hide" id="reasonWarn">10 words at least please~</span>
+            <span class="warn hide" id="reasonWarn">10 words at least please~</span>
         </div>
         <div class="wrap">
             <textarea name="des" id="des"  class="textarea textarea_large" placeholder="Please Enter the Description of the App"></textarea>
-            <span class="warn warn_hide" id="desWarn">20 words at least please~</span>
+            <span class="warn hide" id="desWarn">20 words at least please~</span>
         </div>
     </form>
     <a class="button" href="#">Share</a>

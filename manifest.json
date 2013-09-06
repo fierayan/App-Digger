@@ -3,7 +3,7 @@
     "version":"1.0.0",
     "description":"Collect some information of the app and submit it to the gathering page.",
     "permissions": [
-        "tabs", "https://itunes.apple.com/*/app","http://itunes.apple.com/*/app", "https://itunes.apple.com/app","http://itunes.apple.com/app","https://play.google.com/store/apps/*","http://play.google.com/store/apps/"
+        "cookies","http://www.oa.com/*","https://www.oa.com/*","tabs", "https://itunes.apple.com/*/app","http://itunes.apple.com/*/app", "https://itunes.apple.com/app","http://itunes.apple.com/app","https://play.google.com/store/apps/*","http://play.google.com/store/apps/"
     ],
     "browser_action": {
         "default_title": "Digger The App",
