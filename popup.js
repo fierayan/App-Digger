@@ -2,13 +2,13 @@ var userName,appDes,promoteReason,submitTime,appIconSrc, appName,screenShotSrc={
 var url="http://appshare.sinaapp.com/index.php/appdigger/like_obj";
 
 function gatherInformation(){
+    localStorage.removeItem("reason");
+    localStorage.removeItem("des");
     userName=localStorage.getItem("userName");
     promoteReason=document.querySelector(".textarea_medium").value;
     appDes=document.querySelector(".textarea_large").value;
     submitTime=new Date();
     submitTime=submitTime.toISOString();
-
-    if(pattern.test(userName)){
         if(promoteReason.length>=10){
             if(appDes.length>=20){
                 var info={
@@ -33,7 +33,7 @@ function gatherInformation(){
                 subInput.type="text";
                 subInput.value=JSON.stringify(info);
                 subInput.name="info";
-                subForm.action="http://appshare.sinaapp.com/index.php/appdigger/like_obj";
+                subForm.action=url;
                 subForm.method="post";
                 subForm.submit();
             }else{
@@ -45,20 +45,8 @@ function gatherInformation(){
         }else{
             document.querySelector("#reasonWarn").setAttribute("class","warn");
         }
-    }else if(promoteReason.length<10){
-        if(appDes.length<20){
-            document.querySelector("#userWarn").setAttribute("class","warn");
-            document.querySelector("#reasonWarn").setAttribute("class","warn");
-            document.querySelector("#desWarn").setAttribute("class","warn");
-        }else{
-            document.querySelector("#userWarn").setAttribute("class","warn");
-            document.querySelector("#reasonWarn").setAttribute("class","warn");
-        }
-    }else{
-        document.querySelector("#userWarn").setAttribute("class","warn");
-    }
-
 }
+
 document.addEventListener('DOMContentLoaded', function (){
     chrome.tabs.executeScript(null, {file: "content_script.js"});
     chrome.runtime.onMessage.addListener(
@@ -74,30 +62,41 @@ document.addEventListener('DOMContentLoaded', function (){
             sendResponse({farewell: "goodbye"});
         }
     );
+
+    var tmpName=document.querySelector(".textarea_small"),
+        alwaysInfo=document.querySelector(".userInfo"),
+        tmpReason=document.querySelector(".textarea_medium"),
+        tmpDes=document.querySelector(".textarea_large"),
+        subBtn=document.querySelector(".button");
+
+
+
     if(localStorage.getItem("userName")){
-        document.querySelector(".textarea_small").parentNode.setAttribute("class","wrap hide");
-        document.querySelector(".userInfo").setAttribute("class","userInfo");
+        tmpName.parentNode.setAttribute("class","wrap hide");
+        alwaysInfo.setAttribute("class","userInfo");
         document.querySelector(".userInfo img").src="http://dayu.oa.com/avatars/"+localStorage.getItem("userName")+"/avatar.jpg";
         document.querySelector(".userInfo span").innerHTML=localStorage.getItem("userName");
     }else{
-        var once=document.querySelector(".textarea_small");
-        once.parentNode.setAttribute("class","wrap");
-        var always=document.querySelector(".userInfo");
-        always.setAttribute("class","userInfo  hide");
-        once.addEventListener("keypress",function(event){
-            if(event.keyCode===13){
-                var pattern=/[a-z]{5,}/;
-                if(pattern.test(event.target.value)){
-                    event.preventDefault();
-                    once.setAttribute("class","wrap hide");
-                    always.querySelector("img").src="http://dayu.oa.com/avatars/"+event.target.value+"/avatar.jpg";
-                    always.querySelector("span").innerHTML=event.target.value;
-                    always.setAttribute("class","userInfo");
-                    localStorage.setItem("userName",event.target.value);
-                }
+        tmpName.parentNode.setAttribute("class","wrap");
+        alwaysInfo.setAttribute("class","userInfo  hide");
+        tmpName.addEventListener("blur",function(event){
+            var pattern=/[a-z]{5,}/;
+            if(pattern.test(event.target.value)){
+                tmpName.parentNode.setAttribute("class","wrap hide");
+                alwaysInfo.querySelector("img").src="http://dayu.oa.com/avatars/"+event.target.value+"/avatar.jpg";
+                alwaysInfo.querySelector("span").innerHTML=event.target.value;
+                alwaysInfo.setAttribute("class","userInfo");
+                localStorage.setItem("userName",event.target.value);
             }
         },false);
     }
+    if(localStorage.getItem("reason")){
+        tmpReason.value=localStorage.getItem("reason");
+    }
+    if(localStorage.getItem("des")){
+        tmpDes.value=localStorage.getItem("des");
+    }
+
     var textareaAll=document.querySelectorAll(".textarea");
     for(var i=0;i<textareaAll.length;i++){
         textareaAll[i].addEventListener("focus",function(event){
@@ -105,9 +104,9 @@ document.addEventListener('DOMContentLoaded', function (){
         },false);
         textareaAll[i].addEventListener("blur",function(event){
             event.target.parentNode.querySelector(".warn").setAttribute("class","warn hide");
+            localStorage.setItem(event.target.name,event.target.value);
         },false);
     }
-    var subBtn=document.querySelector(".button");
     subBtn.addEventListener("click",gatherInformation,false);
 });
 
