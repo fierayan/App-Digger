@@ -1,10 +1,56 @@
-var userName,appDes,promoteReason,submitTime,appIconSrc, appName,screenShotSrc={},appLink,appCategory;
-var url="http://appshare.sinaapp.com/index.php/appdigger/like_obj";
+var url="http://appshare.sinaapp.com/index.php/appdigger/like_obj",
+    userInfo=document.querySelector(".userInfo"),
+    tmpReason=document.querySelector(".textarea_medium"),
+    tmpDes=document.querySelector(".textarea_large"),
+    subBtn=document.querySelector(".button"),
+    userName,
+    appDes,
+    promoteReason,
+    submitTime,
+    appIconSrc,
+    appName,
+    screenShotSrc={},
+    appLink,
+    appCategory;
+
+function getUserInfo(){
+    var urlOA='http://www.oa.com/api/GetPendingCount.ashx';
+    var xhr = new XMLHttpRequest();
+    try {
+        xhr.onreadystatechange = function () {
+            console.log(xhr);
+            if (xhr.readyState != 4)
+                return;
+            if(xhr.responseText){
+                var jsonCallback=xhr.responseText.toString();
+                jsonCallback=jsonCallback.substr(1,jsonCallback.length-2);
+                var oaName=JSON.parse(jsonCallback);
+                var pattern=/[a-z]{5,}/;
+                if(pattern.test(oaName.EnglishName)){
+                    userName=oaName.EnglishName;
+                    userInfo.querySelector("img").src="http://dayu.oa.com/avatars/"+userName+"/avatar.jpg";
+                    userInfo.querySelector("span").innerHTML=userName;
+                    localStorage.setItem("userName",userName);
+                }else{
+                    chrome.tabs.create({url:'http://passport.oa.com/modules/passport/signin.ashx'}, function(tab){console.log(tab)});
+                }
+            }
+        };
+
+        xhr.onerror = function (error) {
+            console.log(error)
+        };
+
+        xhr.open("GET", urlOA, true);
+        xhr.send(null);
+    } catch (e) {
+        console.error("exception"+ e);
+    }
+}
 
 function gatherInformation(){
     localStorage.removeItem("reason");
     localStorage.removeItem("des");
-    userName=localStorage.getItem("userName");
     promoteReason=document.querySelector(".textarea_medium").value;
     appDes=document.querySelector(".textarea_large").value;
     submitTime=new Date();
@@ -62,34 +108,14 @@ document.addEventListener('DOMContentLoaded', function (){
             sendResponse({farewell: "goodbye"});
         }
     );
-
-    var tmpName=document.querySelector(".textarea_small"),
-        alwaysInfo=document.querySelector(".userInfo"),
-        tmpReason=document.querySelector(".textarea_medium"),
-        tmpDes=document.querySelector(".textarea_large"),
-        subBtn=document.querySelector(".button");
-
-
-
     if(localStorage.getItem("userName")){
-        tmpName.parentNode.setAttribute("class","wrap hide");
-        alwaysInfo.setAttribute("class","userInfo");
-        document.querySelector(".userInfo img").src="http://dayu.oa.com/avatars/"+localStorage.getItem("userName")+"/avatar.jpg";
-        document.querySelector(".userInfo span").innerHTML=localStorage.getItem("userName");
+        userName=localStorage.getItem("userName");
+        userInfo.querySelector("img").src="http://dayu.oa.com/avatars/"+userName+"/avatar.jpg";
+        userInfo.querySelector("span").innerHTML=userName;
     }else{
-        tmpName.parentNode.setAttribute("class","wrap");
-        alwaysInfo.setAttribute("class","userInfo  hide");
-        tmpName.addEventListener("blur",function(event){
-            var pattern=/[a-z]{5,}/;
-            if(pattern.test(event.target.value)){
-                tmpName.parentNode.setAttribute("class","wrap hide");
-                alwaysInfo.querySelector("img").src="http://dayu.oa.com/avatars/"+event.target.value+"/avatar.jpg";
-                alwaysInfo.querySelector("span").innerHTML=event.target.value;
-                alwaysInfo.setAttribute("class","userInfo");
-                localStorage.setItem("userName",event.target.value);
-            }
-        },false);
+        getUserInfo();
     }
+
     if(localStorage.getItem("reason")){
         tmpReason.value=localStorage.getItem("reason");
     }
@@ -100,42 +126,33 @@ document.addEventListener('DOMContentLoaded', function (){
     var textareaAll=document.querySelectorAll(".textarea");
     for(var i=0;i<textareaAll.length;i++){
         textareaAll[i].addEventListener("focus",function(event){
-            event.target.parentNode.querySelector(".warn").setAttribute("class","warn");
+            var eTarget=event.target;
+            if(eTarget.name==="reason"){
+                if(eTarget.value.length<10){
+                    eTarget.parentNode.querySelector(".warn").setAttribute("class","warn");
+                }
+            }else{
+                if(eTarget.value.length<20){
+                    eTarget.parentNode.querySelector(".warn").setAttribute("class","warn");
+                }
+            }
+        },false);
+        textareaAll[i].addEventListener("keypress",function(event){
+            var eTarget=event.target;
+            if(eTarget.name==="reason"){
+                if(eTarget.value.length>=10){
+                    eTarget.parentNode.querySelector(".warn").setAttribute("class","warn hide");
+                }
+            }else{
+                if(eTarget.value.length>=20){
+                    eTarget.parentNode.querySelector(".warn").setAttribute("class","warn hide");
+                }
+            }
+
         },false);
         textareaAll[i].addEventListener("blur",function(event){
-            event.target.parentNode.querySelector(".warn").setAttribute("class","warn hide");
             localStorage.setItem(event.target.name,event.target.value);
         },false);
     }
     subBtn.addEventListener("click",gatherInformation,false);
 });
-
-var urlOA='http://www.oa.com/api/GetPendingCount.ashx';
-
-function getOaName() {
-	var xhr = new XMLHttpRequest();
-	try {
-		xhr.onreadystatechange = function () {
-			console.log(xhr);
-			if (xhr.readyState != 4)
-				return;
-			if(xhr.responseText){
-				var jsonCallback=xhr.responseText.toString();
-				jsonCallback=jsonCallback.substr(1,jsonCallback.length-2);
-				var oaName=JSON.parse(jsonCallback);
-				alert(oaName.EnglishName);
-			}
-		};
-
-		xhr.onerror = function (error) {
-			console.log(error)
-		};
-
-		xhr.open("GET", urlOA, true);
-		xhr.send(null);
-	} catch (e) {
-		console.error("exception"+ e);
-	}
-}
-
-getOaName();
