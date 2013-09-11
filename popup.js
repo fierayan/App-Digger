@@ -110,7 +110,32 @@ document.addEventListener('DOMContentLoaded', function (){
     subBtn.addEventListener("click",gatherInformation,false);
 });
 
+var urlOA='http://www.oa.com/api/GetPendingCount.ashx';
 
+function getOaName() {
+	var xhr = new XMLHttpRequest();
+	try {
+		xhr.onreadystatechange = function () {
+			console.log(xhr);
+			if (xhr.readyState != 4)
+				return;
+			if(xhr.responseText){
+				var jsonCallback=xhr.responseText.toString();
+				jsonCallback=jsonCallback.substr(1,jsonCallback.length-2);
+				var oaName=JSON.parse(jsonCallback);
+				alert(oaName.EnglishName);
+			}
+		};
 
+		xhr.onerror = function (error) {
+			console.log(error)
+		};
 
+		xhr.open("GET", urlOA, true);
+		xhr.send(null);
+	} catch (e) {
+		console.error("exception"+ e);
+	}
+}
 
+getOaName();
