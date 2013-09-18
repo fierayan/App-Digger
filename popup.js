@@ -1,4 +1,4 @@
-var url="http://appshare.sinaapp.com/index.php/appdigger/like_obj",
+var url="http://f2e.av.cm/tools/appdigger/index.php/appdigger/like_obj",
     userInfo=document.querySelector(".userInfo"),
     tmpReason=document.querySelector(".textarea_medium"),
     tmpDes=document.querySelector(".textarea_large"),
@@ -13,6 +13,39 @@ var url="http://appshare.sinaapp.com/index.php/appdigger/like_obj",
     appLink,
     appCategory;
 
+function switchWarn(event){
+    var eTarget=event.target;
+    if(eTarget.name==="reason"){
+        if(eTarget.value.length>=10){
+            eTarget.parentNode.querySelector(".warn").setAttribute("class","warn hide");
+        }else{
+            eTarget.parentNode.querySelector(".warn").setAttribute("class","warn");
+        }
+    }else{
+        if(eTarget.value.length>=20){
+            eTarget.parentNode.querySelector(".warn").setAttribute("class","warn hide");
+        }else{
+            eTarget.parentNode.querySelector(".warn").setAttribute("class","warn");
+        }
+    }
+}
+function switchWarnWithClip(event){
+    var clip=event.clipboardData.getData('text/plain');
+    var eTarget=event.target;
+    if(eTarget.name==="reason"){
+        if(eTarget.value.length+clip.length>=10){
+            eTarget.parentNode.querySelector(".warn").setAttribute("class","warn hide");
+        }else{
+            eTarget.parentNode.querySelector(".warn").setAttribute("class","warn");
+        }
+    }else{
+        if(eTarget.value.length+clip.length>=20){
+            eTarget.parentNode.querySelector(".warn").setAttribute("class","warn hide");
+        }else{
+            eTarget.parentNode.querySelector(".warn").setAttribute("class","warn");
+        }
+    }
+}
 function getUserInfo(){
     var urlOA='http://www.oa.com/api/GetPendingCount.ashx';
     var xhr = new XMLHttpRequest();
@@ -24,15 +57,14 @@ function getUserInfo(){
             if(xhr.responseText){
                 var jsonCallback=xhr.responseText.toString();
                 jsonCallback=jsonCallback.substr(1,jsonCallback.length-2);
-                var oaName=JSON.parse(jsonCallback);
-                var pattern=/[a-z]{5,}/;
-                if(pattern.test(oaName.EnglishName)){
+                if(jsonCallback.indexOf(",")===15){
+                    chrome.tabs.create({url:'http://passport.oa.com/modules/passport/signin.ashx'}, function(tab){console.log(tab)});
+                }else{
+                    var oaName=JSON.parse(jsonCallback);
                     userName=oaName.EnglishName;
                     userInfo.querySelector("img").src="http://dayu.oa.com/avatars/"+userName+"/avatar.jpg";
                     userInfo.querySelector("span").innerHTML=userName;
                     localStorage.setItem("userName",userName);
-                }else{
-                    chrome.tabs.create({url:'http://passport.oa.com/modules/passport/signin.ashx'}, function(tab){console.log(tab)});
                 }
             }
         };
@@ -47,7 +79,6 @@ function getUserInfo(){
         console.error("exception"+ e);
     }
 }
-
 function gatherInformation(){
     localStorage.removeItem("reason");
     localStorage.removeItem("des");
@@ -115,43 +146,20 @@ document.addEventListener('DOMContentLoaded', function (){
     }else{
         getUserInfo();
     }
-
     if(localStorage.getItem("reason")){
         tmpReason.value=localStorage.getItem("reason");
     }
     if(localStorage.getItem("des")){
         tmpDes.value=localStorage.getItem("des");
     }
-
     var textareaAll=document.querySelectorAll(".textarea");
     for(var i=0;i<textareaAll.length;i++){
-        textareaAll[i].addEventListener("focus",function(event){
-            var eTarget=event.target;
-            if(eTarget.name==="reason"){
-                if(eTarget.value.length<10){
-                    eTarget.parentNode.querySelector(".warn").setAttribute("class","warn");
-                }
-            }else{
-                if(eTarget.value.length<20){
-                    eTarget.parentNode.querySelector(".warn").setAttribute("class","warn");
-                }
-            }
-        },false);
-        textareaAll[i].addEventListener("keypress",function(event){
-            var eTarget=event.target;
-            if(eTarget.name==="reason"){
-                if(eTarget.value.length>=10){
-                    eTarget.parentNode.querySelector(".warn").setAttribute("class","warn hide");
-                }
-            }else{
-                if(eTarget.value.length>=20){
-                    eTarget.parentNode.querySelector(".warn").setAttribute("class","warn hide");
-                }
-            }
-
-        },false);
+        textareaAll[i].addEventListener("focus",switchWarn,false);
+        textareaAll[i].addEventListener("keyup",switchWarn,false);
+        textareaAll[i].addEventListener("paste",switchWarnWithClip,false);
         textareaAll[i].addEventListener("blur",function(event){
             localStorage.setItem(event.target.name,event.target.value);
+            switchWarn(event);
         },false);
     }
     subBtn.addEventListener("click",gatherInformation,false);
