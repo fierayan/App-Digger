@@ -1,6 +1,6 @@
 {
     "name":"AppDigger",
-    "version":"1.0.0",
+    "version":"1.0.1",
     "description":"Collect some information of the app and submit it to the gathering page.",
     "permissions": [
 	    "tabs",

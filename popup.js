@@ -1,4 +1,4 @@
-var url="http://f2e.av.cm/tools/appdigger/index.php/appdigger/like_obj",
+var url="http://mobile.oa.com/appdigger/index.php/appdigger/like_obj",
     userInfo=document.querySelector(".userInfo"),
     tmpReason=document.querySelector(".textarea_medium"),
     tmpDes=document.querySelector(".textarea_large"),
@@ -58,7 +58,10 @@ function getUserInfo(){
                 var jsonCallback=xhr.responseText.toString();
                 jsonCallback=jsonCallback.substr(1,jsonCallback.length-2);
                 if(jsonCallback.indexOf(",")===15){
+					userInfo.querySelector("img").setAttribute("style","display:none;");
+					userInfo.querySelector("span").innerHTML="Please Login OA!";
                     chrome.tabs.create({url:'http://passport.oa.com/modules/passport/signin.ashx'}, function(tab){console.log(tab)});
+					setTimeout(window.close,1500);       
                 }else{
                     var oaName=JSON.parse(jsonCallback);
                     userName=oaName.EnglishName;
