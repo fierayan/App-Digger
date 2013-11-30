@@ -76,9 +76,6 @@
             bottom: -10px;
             left: 40px;
         }
-        .hide{
-            display: none;
-        }
         .button{
             width: 100%;
             border:none;
@@ -96,6 +93,53 @@
         .button:hover{
             background: #16A085;
         }
+        .button-wrap{
+            border-radius: 0 0 10px 10px;
+            font-size: 24px;
+            height: 50px;
+            line-height: 50px;
+            font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            display:-webkit-flex;
+        }
+        .button_half{
+            -webkit-flex: 1;
+            color: white;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            text-decoration: none;
+            display:block !important;
+            width:0;
+            background: #1abc9c;
+            border-top: 1px solid #16A085;
+        }
+        .button_half:hover{
+            background: #16A085;
+        }
+        .button_half_left{
+            border-radius: 0 0 0 10px;
+            border-right: 1px solid #16A085;
+        }
+        .button_half_right{
+            border-radius: 0 0 10px 0;
+        }
+        .pop{
+            position: fixed;
+            width: 300px;
+            height: 200px;
+            z-index: 100;
+            top: 50%;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.6);
+            color: #ffffff;
+            left: 50%;
+            margin: -100px 0 0 -150px;
+            line-height: 200px;
+            text-align: center;
+        }
+        .hide{
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -106,15 +150,20 @@
                 <span></span>
         </div>
         <div class="wrap">
-            <textarea name="reason" id="reason"  class="textarea textarea_medium" placeholder="Please Enter the Reason You Recommend the App" autofocus="autofocus"></textarea>
-            <span class="warn hide" id="reasonWarn">10 words at least please~</span>
+            <textarea name="reason" id="reason"  class="textarea textarea_medium" placeholder="请输入推荐理由" autofocus="autofocus"></textarea>
+            <span class="warn hide" id="reasonWarn">请最少输入10个字</span>
         </div>
         <div class="wrap">
-            <textarea name="des" id="des"  class="textarea textarea_large" placeholder="Please Enter the Description of the App"></textarea>
-            <span class="warn hide" id="desWarn">20 words at least please~</span>
+            <textarea name="des" id="des"  class="textarea textarea_large" placeholder="请输入App描述"></textarea>
+            <span class="warn hide" id="desWarn">请最少输入20个字</span>
         </div>
     </form>
-    <a class="button" href="#">Share</a>
+    <a class="button hide" href="#">Share</a>
+    <div class="button-wrap hide">
+        <a href="#" class="button_half button_half_left">Share</a>
+        <a href="http://mobile.oa.com/appdigger/index.php" target="_blank" class="button_half button_half_right">Email</a>
+    </div>
+    <div class="pop hide" id="pop">信息尚未提取完全，请稍后提交！</div>
     <script type="text/javascript" src="popup.js"></script>
 </body>
 </html>
