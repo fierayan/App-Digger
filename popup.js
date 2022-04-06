@@ -1,4 +1,4 @@
-var url="http://mobile.oa.com/appdigger/index.php/appdigger/like_obj",
+var url="http://mobile.com/appdigger/index.php/appdigger/like_obj",
     userInfo=document.querySelector(".userInfo"),
     tmpReason=document.querySelector(".textarea_medium"),
     tmpDes=document.querySelector(".textarea_large"),
@@ -87,7 +87,7 @@ function getSender(){
     }
 }
 function getUserInfo(){
-    var urlOA='http://www.oa.com/api/GetPendingCount.ashx';
+    var urlOA='http://www.com/api/GetPendingCount.ashx';
     var xhr = new XMLHttpRequest();
     try {
         xhr.onreadystatechange = function () {
@@ -100,12 +100,12 @@ function getUserInfo(){
                 if(jsonCallback.indexOf(",")===15){
 					userInfo.querySelector("img").setAttribute("style","display:none;");
 					userInfo.querySelector("span").innerHTML="Please Login OA!";
-                    chrome.tabs.create({url:'http://passport.oa.com/modules/passport/signin.ashx'}, function(tab){console.log(tab)});
+                    chrome.tabs.create({url:'http://passport.com/modules/passport/signin.ashx'}, function(tab){console.log(tab)});
 					setTimeout(window.close,1500);       
                 }else{
                     var oaName=JSON.parse(jsonCallback);
                     userName=oaName.EnglishName;
-                    userInfo.querySelector("img").src="http://dayu.oa.com/avatars/"+userName+"/avatar.jpg";
+                    userInfo.querySelector("img").src="http://dayu.com/avatars/"+userName+"/avatar.jpg";
                     userInfo.querySelector("span").innerHTML=userName;
                     localStorage.setItem("userName",userName);
                     getSender();
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function (){
     );
     if(localStorage.getItem("userName")){
         userName=localStorage.getItem("userName");
-        userInfo.querySelector("img").src="http://dayu.oa.com/avatars/"+userName+"/avatar.jpg";
+        userInfo.querySelector("img").src="http://dayu.com/avatars/"+userName+"/avatar.jpg";
         userInfo.querySelector("span").innerHTML=userName;
         getSender();
     }else{
