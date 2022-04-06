@@ -4,7 +4,7 @@
     "description":"Collect some information of the app and submit it to the gathering page.",
     "permissions": [
 	    "tabs",
-	    "*://*.oa.com/",
+	    "*://*.com/",
         "*://*.tmt.io/*",
 	    "*://itunes.apple.com/",
 	    "*://play.google.com/",
